@@ -220,5 +220,5 @@ __marimo__/
 venv/
 __pycache__/
 *.pyc
-plots/*.png
+
 .ipynb_checkpoints/
