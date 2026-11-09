@@ -37,7 +37,7 @@ def cessna_172s():
         oswald_e = 0.75,
         cl_max = 1.5,
         power_sl_w = 180 * HP_TO_W,
-        prop_eff = 0.80,
+        prop_eff = 0.55,
 
         bsfc_kg_per_j = BSFC_SI,
         fuel_kg = 318 * LB_TO_KG,
