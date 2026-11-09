@@ -1,0 +1,8 @@
+{
+    "source": "Cessna 172S POH Section 1 specifications, 2550 lb",
+    "max_speed_sl_kt": 126,
+    "roc_sl_fpm": 730,
+    "service_ceiling_ft": 14000,
+    "stall_clean_kias": 51,
+    "range_nm": 638
+}
