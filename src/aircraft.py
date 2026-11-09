@@ -6,6 +6,9 @@ FT_TO_M = 0.3048
 FT2_TO_M2 = 0.09290304
 HP_TO_W = 745.7
 
+BSFC_LB_HP_HR = 0.45
+BSFC_SI = BSFC_LB_HP_HR * LB_TO_KG / (HP_TO_W * 3600)
+
 @dataclass
 class Aircraft:
     name: str
@@ -17,6 +20,9 @@ class Aircraft:
     cl_max: float
     power_sl_w: float
     prop_eff: float
+
+    bsfc_kg_per_j: float
+    fuel_kg: float
 
     @property
     def aspect_ratio(self):
@@ -32,4 +38,7 @@ def cessna_172s():
         cl_max = 1.5,
         power_sl_w = 180 * HP_TO_W,
         prop_eff = 0.80,
+
+        bsfc_kg_per_j = BSFC_SI,
+        fuel_kg = 318 * LB_TO_KG,
     )

@@ -1,7 +1,7 @@
 import math
 from scipy.optimize import brentq
 from src.atmosphere import isa
-from src.aero import drag_force
+from src.aero import drag_force, drag_coefficient, lift_to_drag, cl_max_ld
 from src.propulsion import power_available
 
 G = 9.80665
@@ -42,3 +42,25 @@ def max_rate_of_climb(ac, altitude_m, weight_kg = None):
 
 def service_ceiling(ac, weight_kg = None):
     return brentq(lambda h: max_rate_of_climb(ac, h, weight_kg) - CEILING_ROC, 0, 11000)
+
+#------
+
+def max_range(ac, fuel_kg=None, weight_kg=None):
+    fuel = ac.fuel_kg if fuel_kg is None else fuel_kg
+    w0 = _weight_n(ac, weight_kg)
+    w1 = w0 - fuel * G
+    ld = lift_to_drag(ac, cl_max_ld(ac))
+    c = ac.bsfc_kg_per_j * G
+    return ac.prop_eff / c * ld * math.log(w0 / w1)
+
+def max_endurance(ac, altitude_m=0, fuel_kg=None, weight_kg=None):
+    fuel = ac.fuel_kg if fuel_kg is None else fuel_kg
+    _, _, rho, _ = isa(altitude_m)
+    w0 = _weight_n(ac, weight_kg)
+    w1 = w0 - fuel * G
+    cl = math.sqrt(3 * math.pi * ac.oswald_e * ac.aspect_ratio * ac.cd0)
+    cd = drag_coefficient(ac, cl)
+    c = ac.bsfc_kg_per_j * G
+    return (ac.prop_eff / c * cl ** 1.5 / cd
+            * math.sqrt(2 * rho * ac.wing_area_m2)
+            * (w1 ** -0.5 - w0 ** -0.5))
